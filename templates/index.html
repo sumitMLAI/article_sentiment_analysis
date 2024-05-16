@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentiment Analysis</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <style>
+        /* CSS styles here */
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7; /* Light background color */
+        }
+
+        header, footer {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        section {
+            margin: 20px;
+            background-color: #fff; /* White background color for sections */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Box shadow for depth */
+        }
+
+        form {
+            margin-bottom: 10px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s ease; /* Smooth transition */
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        textarea {
+            width: 100%;
+            resize: vertical;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .result {
+            margin-top: 10px;
+            background-color: #f0f0f0; /* Light gray background for results */
+            padding: 10px;
+            border-radius: 4px;
+        }
+
+        /* Responsive styles */
+        @media only screen and (max-width: 600px) {
+            header h1 {
+                font-size: 24px;
+            }
+
+            section {
+                margin: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Summarization & Sentiment Analysis</h1>
+        <p>This is a simple Article summarization and sentiment analysis.</p>
+    </header>
+    
+    <section id="summarize-section">
+        <h2>Summarize Article</h2>
+        <form id="summarizeForm">
+            <label for="text">Enter Article:</label><br>
+            <textarea id="text" name="text" rows="5" cols="50"></textarea><br>
+            <button type="submit">Summarize</button>
+        </form>
+        <div id="summaryResult" class="result"></div>
+    </section>
+    
+    <section id="sentiment-section">
+        <h2>Analyze Sentiment</h2>
+        <form id="sentimentForm">
+            <label for="text">Enter Summary :</label><br>
+            <textarea id="text" name="text" rows="5" cols="50"></textarea><br>
+            <button type="submit">Analyze Sentiment</button>
+        </form>
+        <div id="sentimentResult" class="result"></div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Your Company</p>
+    </footer>
+
+    <script>
+        // JavaScript code here
+        document.getElementById('summarizeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            let text = document.getElementById('text').value;
+            fetch('/summarize', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ text: text })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('summaryResult').innerText = data.summary;
+            });
+        });
+
+        document.getElementById('sentimentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            let text = document.getElementById('text').value;
+            fetch('/sentiment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ text: text })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('sentimentResult').innerText = data.sentiment;
+            });
+        });
+    </script>
+</body>
+</html>
